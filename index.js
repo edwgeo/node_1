@@ -1,21 +1,17 @@
-const http = require('http')
-const fs = require('fs')
+const express = require('express')
+const fs = require('fs').promises
+const app = express()
 
-let app = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    
-    let body = fs.readFileSync('/Users/edwingeorge/Documents/Github/node_1/test.txt', 'utf8', (err, data) => {
-        if (err) {
-            console.log(err)
-            return
-        }
-        // res.write(data)
-        // res.end()
-        return data
-    })
-    res.write(body);
-    res.end()
+app.use(express.static('public'))
+
+app.get('/', async (req, res) => {
+    let data = await fs.readFile('./books.json', 'utf8')
+    data = JSON.parse(data);
+    res.setHeader("Content-Type", "text/html")
+    data.forEach(element => {
+        res.write("<div><img src='"+element.imageLink+"'/></div>")
+    });
+    res.send()
 });
 
-app.listen(3000, '127.0.0.1');
-console.log('Node server running on port 3000')
+app.listen(3000, () => console.log('Server running on port 3000'))
