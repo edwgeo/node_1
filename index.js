@@ -1,13 +1,22 @@
 const express = require('express')
 const fs = require('fs').promises
-const app = express()
+const compression = require('compression')
+const helmet = require('helmet');
 
+const app = express()
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}))
+app.use(compression())
 app.use(express.static('public'))
 
+app.get('/', () => {
+    res.sendStatus(200);
+})
 app.get('/api', async (req, res) => {
     let data = await fs.readFile('./books.json', 'utf8')
     data = JSON.parse(data);
-    res.json(data)
+    res.json(data);
 });
 
 app.listen(3000, () => console.log('Server running on port 3000'))
