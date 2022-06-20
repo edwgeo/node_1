@@ -11,7 +11,7 @@ app.use(compression())
 app.use(express.static('public'))
 
 app.get('/', () => {
-    res.sendStatus(200);
+    res.end("Hello from backend");
 })
 app.get('/api', async (req, res) => {
     let data = await fs.readFile('./books.json', 'utf8')
