@@ -10,7 +10,7 @@ app.use(helmet({
 app.use(compression())
 app.use(express.static('public'))
 
-app.get('/', () => {
+app.get('/', (req, res) => {
     res.end("Hello from backend");
 })
 app.get('/api', async (req, res) => {
